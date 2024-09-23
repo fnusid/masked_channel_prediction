@@ -1,0 +1,40 @@
+{
+    "pl_logger": "src.hl_modules.tse_hl_module.TSELogger",
+    "pl_module": "src.hl_modules.tse_hl_module.PLModule",
+    "pl_module_args": {
+        "metrics":["snr_i", "si_snr_i", "si_sdr_i"],
+        "model": "src.models.Waveformer.net.Net",
+        "model_params": {
+            "hop_size": 32,
+            "lookahead_samples":32,
+            "lookback_samples": 32,
+            "chunk_size":160,
+            "num_ch": 2,
+            "model_dim": 128,
+            "num_enc_layers": 10,
+            "dec_chunk_size": 5,
+            "embed_dim": 128
+        },
+        "optimizer":"torch.optim.Adam",
+        "optimizer_params":{
+            "lr":1e-3
+        },
+        "loss":"src.losses.SNRLosses.SNRLosses",
+        "loss_params":{
+            "name":"snr"
+        },
+        "scheduler":"torch.optim.lr_scheduler.ReduceLROnPlateau",
+        "scheduler_params":{
+            "mode":"max",
+            "patience":3,
+            "factor":0.5,
+            "min_lr":1e-6
+        },
+        "sr":48000
+    },
+    "grad_clip": 1,
+    "epochs": 100,
+    "batch_size": 8,
+    "eval_batch_size": 10,
+    "num_workers": 16
+}
